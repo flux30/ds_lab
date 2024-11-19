@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <string.h>
+
+struct Employee {
+    char name[50];
+    float salary;
+};
+
+void insertionSort(struct Employee employees[], int n) {
+    for (int i = 1; i < n; i++) {
+        struct Employee key = employees[i];
+        int j = i - 1;
+        
+        while (j >= 0 && (employees[j].salary < key.salary || 
+            (employees[j].salary == key.salary && strcmp(employees[j].name, key.name) > 0))) {
+            employees[j + 1] = employees[j];
+            j = j - 1;
+        }
+        employees[j + 1] = key;
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter number of employees: ");
+    scanf("%d", &n);
+    
+    struct Employee employees[n];
+    
+    for (int i = 0; i < n; i++) {
+        printf("Enter name and salary of employee %d: ", i + 1);
+        scanf("%s %f", employees[i].name, &employees[i].salary);
+    }
+    
+    insertionSort(employees, n);
+    
+    printf("\nSorted employee information:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Name: %s, Salary: %.2f\n", employees[i].name, employees[i].salary);
+    }
+    
+    return 0;
+}

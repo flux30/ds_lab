@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <string.h>
+
+struct Student {
+    char name[50];
+    char srn[20];
+    float percentage;
+};
+
+int linearSearch(struct Student students[], int n, char srn[]) {
+    for (int i = 0; i < n; i++) {
+        if (strcmp(students[i].srn, srn) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int main() {
+    int n;
+    printf("Enter number of students: ");
+    scanf("%d", &n);
+    
+    struct Student students[n];
+    
+    for (int i = 0; i < n; i++) {
+        printf("Enter SRN, name, and percentage of student %d: ", i + 1);
+        scanf("%s %s %f", students[i].srn, students[i].name, &students[i].percentage);
+    }
+    
+    char searchSRN[20];
+    printf("Enter SRN to search: ");
+    scanf("%s", searchSRN);
+    
+    int index = linearSearch(students, n, searchSRN);
+    
+    if (index != -1) {
+        printf("Student found!\n");
+        printf("Name: %s, SRN: %s, Percentage: %.2f\n", students[index].name, students[index].srn, students[index].percentage);
+    } else {
+        printf("Student with SRN %s not found.\n", searchSRN);
+    }
+    
+    return 0;
+}

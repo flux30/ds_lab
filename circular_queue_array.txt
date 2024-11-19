@@ -1,0 +1,70 @@
+#include <stdio.h>
+
+#define N 5 
+int queue[N];
+int front = -1;
+int rear = -1;
+
+void enqueue(int x) {
+    if ((rear + 1) % N == front) {
+        printf("\nOverflow: Circular queue is full.");
+    } else if (front == -1 && rear == -1) { 
+        front = rear = 0;
+        queue[rear] = x;
+    } else {
+        rear = (rear + 1) % N; 
+        queue[rear] = x;
+    }
+}
+
+void dequeue() {
+    if (front == -1 && rear == -1) {
+        printf("\nUnderflow: Circular queue is empty.");
+    } else if (front == rear) { 
+        printf("\n%d has been removed", queue[front]);
+        front = rear = -1; 
+    } else {
+        printf("\n%d has been removed", queue[front]);
+        front = (front + 1) % N; 
+    }
+}
+
+void display() {
+    if (front == -1 && rear == -1) {
+        printf("\nCircular queue is empty.");
+    } else {
+        printf("\nCircular queue elements:");
+        int i = front;
+        while (i!=rear) {
+            printf(" %d", queue[i]);
+            i = (i + 1) % N; 
+        }
+        printf("\n%d",queue[rear]);
+    }
+}
+
+void peek() {
+    if (front == -1 && rear == -1) {
+        printf("\nCircular queue is empty.");
+    } else {
+        printf("\nFront element: %d", queue[front]);
+    }
+}
+
+int main() {
+    enqueue(2);
+    enqueue(5);
+    enqueue(8);
+    enqueue(1);
+    enqueue(9); 
+    display();
+    peek();
+    dequeue();
+    dequeue();
+    display();
+    enqueue(12); 
+    enqueue(15); 
+    display();
+    peek();
+    return 0;
+}

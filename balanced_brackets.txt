@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX 100 // Maximum size of the stack
+
+char stack[MAX];
+int top = -1;
+
+// Function to push an element onto the stack
+void push(char item) {
+    if (top == MAX - 1) {
+        printf("Stack Overflow\n");
+    } else {
+        top++;
+        stack[top] = item;
+    }
+}
+
+// Function to pop an element from the stack
+char pop() {
+    if (top == -1) {
+        return '\0'; // Return null character if the stack is empty
+    } else {
+        return stack[top--];
+    }
+}
+
+// Function to check if the character is an opening bracket
+int isOpeningBracket(char ch) {
+    return (ch == '(' || ch == '{' || ch == '[');
+}
+
+// Function to check if the character is a closing bracket
+int isClosingBracket(char ch) {
+    return (ch == ')' || ch == '}' || ch == ']');
+}
+
+// Function to check if the brackets are balanced
+int isBalanced(char expression[]) {
+    char ch;
+    int i;
+
+    for (i = 0; expression[i] != '\0'; i++) {
+        ch = expression[i];
+
+        // If it's an opening bracket, push it to the stack
+        if (isOpeningBracket(ch)) {
+            push(ch);
+        }
+        // If it's a closing bracket, pop the top element from the stack
+        else if (isClosingBracket(ch)) {
+            if (top == -1) {
+                return 0; // Stack is empty, unbalanced
+            }
+            char popped = pop();
+
+            // Check if the popped character matches the current closing bracket
+            if ((ch == ')' && popped != '(') ||
+                (ch == '}' && popped != '{') ||
+                (ch == ']' && popped != '[')) {
+                return 0; // Mismatched pair, unbalanced
+            }
+        }
+    }
+
+    // If the stack is empty after processing the expression, it's balanced
+    return (top == -1);
+}
+
+int main() {
+    char expression[MAX];
+
+    printf("Enter an expression: ");
+    scanf("%s", expression);
+
+    if (isBalanced(expression)) {
+        printf("The expression has balanced brackets.\n");
+    } else {
+        printf("The expression has unbalanced brackets.\n");
+    }
+
+    return 0;
+}

@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+    int data;
+    struct Node* next;
+};
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf("\nMemory allocation failed.");
+        exit(1);
+    }
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* newNode = createNode(data);
+    if (*head == NULL) { 
+        *head = newNode;
+        newNode->next = *head; 
+    } else {
+        struct Node* temp = *head;
+        while (temp->next != *head) { 
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->next = *head; 
+    }
+}
+void deleteFirst(struct Node** head) {
+    if (*head == NULL) {
+        printf("\nList is empty. Nothing to delete.");
+        return;
+    }
+
+    struct Node* temp = *head;
+    if ((*head)->next == *head) { 
+        *head = NULL;
+    } else {
+        struct Node* last = *head;
+        while (last->next != *head) { 
+            last = last->next;
+        }
+        *head = (*head)->next; 
+        last->next = *head;    
+    }
+    printf("\nDeleted: %d", temp->data);
+    free(temp);
+}
+void display(struct Node* head) {
+    if (head == NULL) {
+        printf("\nList is empty.");
+        return;
+    }
+    struct Node* temp = head;
+    printf("\nList: ");
+    do {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+    printf("(Back to head)");
+}
+
+int main() {
+    struct Node* head = NULL; 
+    insertAtEnd(&head, 10);
+    insertAtEnd(&head, 20);
+    insertAtEnd(&head, 30);
+    display(head);
+
+    deleteFirst(&head);
+    display(head);
+
+    insertAtEnd(&head, 40);
+    display(head);
+
+    return 0;
+}

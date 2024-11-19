@@ -1,0 +1,75 @@
+#include <stdio.h>
+
+#define N 10 
+
+struct PriorityQueue {
+    int data;
+    int priority;
+};
+
+struct PriorityQueue pq[N];
+int size = 0;
+
+void enqueue(int data, int priority) {
+    if (size == N) {
+        printf("\nOverflow: Priority queue is full.");
+        return;
+    }
+    pq[size].data = data;
+    pq[size].priority = priority;
+    size++;
+    for (int i = size - 1; i > 0; i--) {
+        if (pq[i].priority > pq[i - 1].priority) {
+            struct PriorityQueue temp = pq[i];
+            pq[i] = pq[i - 1];
+            pq[i - 1] = temp;
+        } else {
+            break;
+        }
+    }
+}
+
+void dequeue() {
+    if (size == 0) {
+        printf("\nUnderflow: Priority queue is empty.");
+        return;
+    }
+    printf("\n%d with priority %d has been removed", pq[0].data, pq[0].priority);
+    for (int i = 0; i < size - 1; i++) {
+        pq[i] = pq[i + 1];
+    }
+    size--;
+}
+
+void peek() {
+    if (size == 0) {
+        printf("\nPriority queue is empty.");
+    } else {
+        printf("\nFront element: %d with priority %d", pq[0].data, pq[0].priority);
+    }
+}
+
+void display() {
+    if (size == 0) {
+        printf("\nPriority queue is empty.");
+    } else {
+        printf("\nPriority queue elements:");
+        for (int i = 0; i < size; i++) {
+            printf("\nData: %d, Priority: %d", pq[i].data, pq[i].priority);
+        }
+    }
+}
+
+int main() {
+    enqueue(4, 1);  
+    enqueue(3, 3);  
+    enqueue(6, 2);  
+    enqueue(7, 5);  
+    display();
+    peek();
+    dequeue();
+    display();
+    enqueue(8, 4);
+    display();
+    return 0;
+}

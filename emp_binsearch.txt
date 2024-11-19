@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <string.h>
+#define MAX_EMPLOYEES 5
+struct Employee {
+    int empID;
+    char name[50];
+    char address[100];
+    float salary;
+};
+int binarySearch(struct Employee empList[], int left, int right, int empID) {
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (empList[mid].empID == empID) {
+            return mid; }
+        if (empID < empList[mid].empID) {
+            right = mid - 1;
+        }
+        else {
+            left = mid + 1;
+        }
+    }
+
+    return -1; 
+}
+
+int main() {
+    struct Employee empList[MAX_EMPLOYEES] = {
+        {101, "John Doe", "123 Elm St", 50000.00},
+        {102, "Jane Smith", "456 Oak St", 55000.00},
+        {103, "Sam Brown", "789 Pine St", 60000.00},
+        {104, "Lisa White", "101 Maple St", 65000.00},
+        {105, "Tom Green", "202 Birch St", 70000.00}
+    };
+
+    int empID, index;
+    printf("Enter the Employee ID to search: ");
+    scanf("%d", &empID);
+    index = binarySearch(empList, 0, MAX_EMPLOYEES - 1, empID);
+    if (index != -1) {
+        printf("\nEmployee Details:\n");
+        printf("Employee ID: %d\n", empList[index].empID);
+        printf("Name: %s\n", empList[index].name);
+        printf("Address: %s\n", empList[index].address);
+        printf("Salary: %.2f\n", empList[index].salary);
+    } else {
+        printf("\nEmployee with ID %d not found.\n", empID);
+    }
+
+    return 0;
+}

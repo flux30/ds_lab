@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf("\nMemory allocation failed.");
+        exit(1);
+    }
+    newNode->data = data;
+    newNode->prev = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* newNode = createNode(data);
+    if (*head == NULL) { 
+        *head = newNode;
+    } else {
+        struct Node* temp = *head;
+        while (temp->next != NULL) { 
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->prev = temp;
+    }
+}
+void deleteFirst(struct Node** head) {
+    if (*head == NULL) {
+        printf("\nList is empty. Nothing to delete.");
+    } else {
+        struct Node* temp = *head;
+        *head = (*head)->next; 
+        if (*head != NULL) {
+            (*head)->prev = NULL; 
+        }
+        printf("\nDeleted: %d", temp->data);
+        free(temp);
+    }
+}
+void displayForward(struct Node* head) {
+    if (head == NULL) {
+        printf("\nList is empty.");
+    } else {
+        printf("\nList (forward): ");
+        while (head != NULL) {
+            printf("%d -> ", head->data);
+            head = head->next;
+        }
+        printf("NULL");
+    }
+}
+void displayReverse(struct Node* head) {
+    if (head == NULL) {
+        printf("\nList is empty.");
+    } else {
+        struct Node* temp = head;
+        while (temp->next != NULL) { 
+            temp = temp->next;
+        }
+        printf("\nList (reverse): ");
+        while (temp != NULL) {
+            printf("%d -> ", temp->data);
+            temp = temp->prev;
+        }
+        printf("NULL");
+    }
+}
+
+int main() {
+    struct Node* head = NULL; 
+    insertAtEnd(&head, 10);
+    insertAtEnd(&head, 20);
+    insertAtEnd(&head, 30);
+    displayForward(head);
+    displayReverse(head);
+
+    deleteFirst(&head);
+    displayForward(head);
+    displayReverse(head);
+
+    insertAtEnd(&head, 40);
+    displayForward(head);
+    displayReverse(head);
+
+    return 0;
+}
